@@ -1,4 +1,6 @@
-import 'package:ecommerce/login.dart';
+import 'package:ecommerce/pages/home.dart';
+import 'package:ecommerce/pages/login.dart';
+import 'package:ecommerce/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,14 +14,20 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return   MaterialApp(
+      
       theme: ThemeData(
         primaryTextTheme: GoogleFonts.latoTextTheme(),
+        brightness: Brightness.light,
+        primarySwatch: Colors.deepPurple
       ),
-      home:  const Scaffold(
-        body: Center(
-          child: Login()
-        ),
-      ),
+      routes: {
+        "/": (context) => const Login(),
+        MyRoutes.homeroute: (context) => const Home(),
+        MyRoutes.loginroute: (context) => const Login(),
+        },
+
+     
+      
     );
   }
 }
