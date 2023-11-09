@@ -17,11 +17,11 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
       theme: ThemeData(
         primaryTextTheme: GoogleFonts.latoTextTheme(),
-        primarySwatch: Colors.purple
+        primarySwatch: Colors.deepPurple
     ),
       
       routes: {
-          "/": (context) => const Login(),
+          "/": (context) => const Home(),
           MyRoutes.homeroute: (context) => const Home(),
           MyRoutes.loginroute: (context) => const Login(),
         }

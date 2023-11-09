@@ -11,6 +11,23 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   String name = "";
   bool changebutton = false;
+  final _formkey = GlobalKey<FormState>();
+
+  movetohome(BuildContext context) async {
+    if (_formkey.currentState!.validate()) {
+      setState(() {
+        changebutton = true;
+      });
+      await Future.delayed(
+        const Duration(seconds: 1),
+      );
+      await Navigator.pushNamed(context, MyRoutes.homeroute);
+      setState(() {
+        changebutton = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -28,40 +45,50 @@ class _LoginState extends State<Login> {
           ),
           Container(
             margin: const EdgeInsets.all(35),
-            child: Column(
-              children: [
-                TextFormField(
+            child: Form(
+              key: _formkey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    onChanged: (value) {
+                      name = value;
+                      setState(() {});
+                    },
                     decoration: const InputDecoration(
                       label: Text('Username'),
                       hintText: 'Enter your Username',
                     ),
-                    onChanged: (value) {
-                      name = value;
-                      setState(() {});
-                    }),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    label: Text('Password'),
-                    hintText: 'Enter your Password',
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Username Can't be empty";
+                      }
+                      return null;
+                    },
                   ),
-                  obscureText: true,
-                )
-              ],
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Password',
+                      hintText: 'Enter your Password',
+                    ),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Passsword Can't be empty";
+                      } else if (value.length < 6) {
+                        return "Password Length should be atleast 6";
+                      }
+                      return null;
+                    },
+                  )
+                ],
+              ),
             ),
           ),
           Material(
             color: Colors.purple,
             borderRadius: BorderRadius.circular(changebutton ? 50 : 9),
             child: InkWell(
-              onTap: () async {
-                setState(() {
-                  changebutton = true;
-                });
-                await Future.delayed(
-                  const Duration(seconds: 1),
-                );
-                Navigator.pushNamed(context, MyRoutes.homeroute);
-              },
+              onTap: () => movetohome(context),
               child: AnimatedContainer(
                 duration: const Duration(seconds: 1),
                 alignment: Alignment.center,
@@ -72,10 +99,9 @@ class _LoginState extends State<Login> {
                     : const Text(
                         "Login",
                         style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white
-                        ),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
               ),
             ),
